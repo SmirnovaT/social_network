@@ -1,4 +1,7 @@
-from fastapi import FastAPI, Depends, HTTPException
+import sys
+
+sys.path.append("..")
+from fastapi import Depends, HTTPException, status, APIRouter
 from pydantic import BaseModel
 from typing import Optional
 import models
@@ -7,15 +10,31 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from datetime import datetime, timedelta
-from jose import jwt
+from jose import jwt, JWTError
 
-SECRET_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MzkwNjU4MSwiaWF0IjoxNjczOTA2NTgxfQ.7CIz_lwsqZC2B2luIrrmuFfXwArk5Nr7hbUH1r6ugb4'
-AlGORITHM = 'HS256'
+SECRET_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3Mzk2NzE2MSwiaWF0IjoxNjczOTY3MTYxfQ.cgXhCGZvT99FFVHdHEbDhyvvEwu3Z3uFxYMNgxWkNmU'
+ALGORITHM = 'HS256'
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='token')
 
+auth_router = APIRouter(
+    prefix='/api/auth',
+    tags=['authentication'],
+    responses={401: {"user": "Not authorized"}}
+)
 
-class CreateUser(BaseModel):
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class User(BaseModel):
     username: str
     email: Optional[str]
     first_name: str
@@ -23,11 +42,13 @@ class CreateUser(BaseModel):
     password: str
 
 
+class UserInDB(User):
+    hashed_password: str
+
+
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 models.Base.metadata.create_all(bind=engine)
-
-app = FastAPI()
 
 
 def get_db():
@@ -66,11 +87,23 @@ def create_access_token(username: str, user_id: int,
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     encode.update({"exp": expire})
-    return jwt.encode(encode, SECRET_KEY, algorithm=AlGORITHM)
+    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-@app.post('/create/user')
-async def create_new_user(create_user: CreateUser, db: Session = Depends(get_db)):
+async def get_current_user(token: str = Depends(oauth2_bearer)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        user_id: int = payload.get("id")
+        if username is None or user_id is None:
+            raise get_user_exception()
+        return {"username": username, "id": user_id}
+    except JWTError:
+        raise get_user_exception()
+
+
+@auth_router.post("/create/user")
+async def create_new_user(create_user: User, db: Session = Depends(get_db)):
     create_user_model = models.User()
     create_user_model.email = create_user.email
     create_user_model.username = create_user.username
@@ -86,14 +119,33 @@ async def create_new_user(create_user: CreateUser, db: Session = Depends(get_db)
     db.commit()
 
 
-@app.post('/token')
+@auth_router.post('/token')
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
                                  db: Session = Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
-        raise HTTPException(status_code=404, detail='User not found')
+        raise token_exception()
     token_expires = timedelta(minutes=20)
-    token = create_access_token(user.usernname,
+    token = create_access_token(user.username,
                                 user.id,
                                 expires_delta=token_expires)
     return {'token': token}
+
+
+# Exceptions
+def get_user_exception():
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    return credentials_exception
+
+
+def token_exception():
+    token_exception_response = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect username password",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
+    return token_exception_response

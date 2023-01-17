@@ -1,19 +1,13 @@
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
+from fastapi import FastAPI
+
 import models
-from social_network.code.database import SessionLocal, engine
+from controller import post, like, auth
+from database import engine
 
 app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
 
-
-def get_db():
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
-
-
+app.include_router(post.post_router)
+app.include_router(like.like_router)
+app.include_router(auth.auth_router)
