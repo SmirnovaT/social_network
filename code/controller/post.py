@@ -1,15 +1,17 @@
 import sys
 
-from database import SessionLocal, engine
+from controller.auth import get_current_user, get_user_exception
+from database import engine, Base, get_db
+from schemas.post import Post
+from services.post import PostService
 
 sys.path.append("..")
 
 import models
 
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, APIRouter
 
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 
 post_router = APIRouter(
     prefix='/api/post',
@@ -17,55 +19,34 @@ post_router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
-models.Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
-
-
-class Post(BaseModel):
-    content: str
+Base.metadata.create_all(bind=engine)
 
 
 @post_router.get('/')
-async def read_all(db: Session = Depends(get_db)):
-    return db.query(models.Post).all()
+async def read_all(service: PostService = Depends(PostService)):
+    return service.get_posts()
 
 
 @post_router.get('/{post_id}')
-async def read_post(post_id: int,
-                    db: Session = Depends(get_db)):
-    post_model = db.query(models.Post) \
-        .filter(models.Post.id == post_id) \
-        .first()
-
-    if post_model is not None:
-        return post_model
-    raise http_exception()
+async def read_post(post_id: int, service: PostService = Depends(PostService)
+                    ):
+    return service.read_post(post_id)
 
 
 @post_router.post('/')
-async def create_post(post: Post, db: Session = Depends(get_db)):
-    post_model = models.Post()
-    post_model.content = post.content
-
-    db.add(post_model)
-    db.commit()
-
-    return successful_response(201)
+async def create_post(post: Post, service: PostService = Depends(PostService)):
+    return service.create_post(post)
 
 
 @post_router.put('/{post_id}')
-async def update_post(post_id: int, post: Post, db: Session = Depends(get_db)):
+async def update_post(post_id: int, post: Post, user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     post_model = db.query(models.Post).filter(models.Post.id == post_id).first()
 
+    if user is None:
+        raise get_user_exception()
+
     if post_model is None:
-        raise http_exception()
+        raise http_post_exception()
 
     post_model.content = post.content
 
@@ -76,12 +57,14 @@ async def update_post(post_id: int, post: Post, db: Session = Depends(get_db)):
 
 
 @post_router.delete('/{post_id}')
-async def delete_todo(post_id: int,
+async def delete_todo(post_id: int, user: dict = Depends(get_current_user),
                       db: Session = Depends(get_db)):
     post_model = db.query(models.Post).filter(models.Post.id == post_id).first()
 
+    if user is None:
+        raise get_user_exception()
     if post_model is None:
-        raise http_exception()
+        raise http_post_exception()
 
     db.query(models.Post) \
         .filter(models.Post.id == post_id) \
@@ -97,7 +80,3 @@ def successful_response(status_code: int):
         'status': status_code,
         'transaction': 'Successful'
     }
-
-
-def http_exception():
-    return HTTPException(status_code=404, detail='Todo not found')

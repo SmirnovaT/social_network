@@ -2,14 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ea24a9e-804f-4f90-a77e-abff73bb16e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/code/controller/like.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/controller/post.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/auth.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/exeptions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/models/like.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/models/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/models/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/repositories/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/repositories/base_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/repositories/like.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/repositories/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/responses.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/schemas/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/schemas/like.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/schemas/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/services/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/services/like.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/services/post.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1a6581aa-d908-475f-b1e2-8613e45b75c5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/controller/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/controller/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/controller/like.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/controller/like.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/controller/post.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/controller/post.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/social_networking" beforeDir="false" afterPath="$PROJECT_DIR$/code/controller/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/social_network.db" beforeDir="false" afterPath="$PROJECT_DIR$/code/social_network.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,23 +53,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/smirnovati/Documents/GitHub/social_network&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/smirnovati/Documents/GitHub/social_network/code",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\smirnovati\Documents\GitHub\social_network\code\models" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Unnamed" type="Python.FastAPI" nameIsGenerated="true">
+      <option name="file" value="C:\Users\smirnovati\Documents\GitHub\social_network\code\main.py" />
       <module name="social_network" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="C:\Users\smirnovati\AppData\Local\Programs\Python\Python310\python.exe" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -80,7 +103,8 @@
       <option name="presentableId" value="Default" />
       <updated>1673942394379</updated>
       <workItem from="1673942396159" duration="118000" />
-      <workItem from="1673942516598" duration="19305000" />
+      <workItem from="1673942516598" duration="20005000" />
+      <workItem from="1674026874815" duration="24499000" />
     </task>
     <servers />
   </component>
@@ -97,5 +121,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/social_network$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1674032499417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
   </component>
 </project>

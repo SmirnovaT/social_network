@@ -1,12 +1,11 @@
 from fastapi import FastAPI
 
-import models
-from controller import post, like, auth
-from database import engine
+from controller import like, post, auth
+from database import engine, Base
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app.include_router(post.post_router)
 app.include_router(like.like_router)
