@@ -1,11 +1,11 @@
 import sys
 
 import models
-from database import engine, Base, get_db
-from exeptions import token_exception, get_user_exception
-from schemas.auth import CreateUser
+from src.database import engine, Base, get_db
+from src.exeptions import token_exception, get_user_exception
+from src.schemas.auth import CreateUser
 
-sys.path.append("..")
+sys.path.append("../../code")
 from fastapi import Depends, APIRouter
 from typing import Optional
 

@@ -1,8 +1,12 @@
-import models
+import sys
 
-from repositories.base_repository import BaseRepository
-from responses import successful_response
-from schemas.like import Like
+from src import models
+
+sys.path.append("../../code")
+from src.models.like import Like
+
+from ..repositories.base_repository import BaseRepository
+from src.responses import successful_response
 
 
 class LikeRepository(BaseRepository):
@@ -19,4 +23,3 @@ class LikeRepository(BaseRepository):
         self.db.commit()
 
         return successful_response(201)
-

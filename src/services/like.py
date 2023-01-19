@@ -1,8 +1,8 @@
 from fastapi import Depends
-from controller.auth import get_current_user, get_user_exception
-from exeptions import http_like_exception
-from repositories.like import LikeRepository
-from schemas.like import Like
+from src.controller.auth import get_current_user, get_user_exception
+from src.exeptions import http_like_exception
+from src.repositories.like import LikeRepository
+from src.schemas.like import Like
 
 
 class LikeService:
@@ -11,13 +11,15 @@ class LikeService:
         self.user = user
 
     def get_like(self):
-        if self.user is None:
-            raise get_user_exception()
+        self.user_none()
         return self.repository.get_like()
 
     def create_like(self, like: Like):
-        if self.user is None:
-            raise get_user_exception()
+        self.user_none()
         if self.user['id'] == like.user_id:
             raise http_like_exception()
         return self.repository.create_like(like)
+
+    def user_none(self):
+        if self.user is None:
+            raise get_user_exception()
