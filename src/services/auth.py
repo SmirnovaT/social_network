@@ -14,8 +14,12 @@ from src.shared.exeptions import token_exception, get_user_exception
 
 
 class CreateUserService:
-    def __init__(self, repository: CreateUserRepository = Depends(), db: Session = Depends(get_db)):
-        self.repository = repository,
+    def __init__(
+        self,
+        repository: CreateUserRepository = Depends(),
+        db: Session = Depends(get_db),
+    ):
+        self.repository = repository
         self.db = db
 
     def create_new_user(self, create_user: CreateUser):
@@ -26,16 +30,12 @@ class CreateUserService:
         if not user:
             raise token_exception()
         token_expires = timedelta(minutes=20)
-        token = create_access_token(user.username,
-                                    user.id,
-                                    expires_delta=token_expires)
-        return {'access_token': token}
+        token = create_access_token(user.username, user.id, expires_delta=token_expires)
+        return {"access_token": token}
 
 
 def authenticate_user(username: str, password: str, db):
-    user = db.query(models.User) \
-        .filter(models.User.username == username) \
-        .first()
+    user = db.query(models.User).filter(models.User.username == username).first()
     if not user:
         return False
     if not _verify_password(password, user.password):
@@ -47,9 +47,10 @@ def _verify_password(plain_password, hash_password):
     return bcrypt_context.verify(plain_password, hash_password)
 
 
-def create_access_token(username: str, user_id: int,
-                        expires_delta: Optional[timedelta] = None):
-    encode = {'sub': username, 'id': user_id}
+def create_access_token(
+    username: str, user_id: int, expires_delta: Optional[timedelta] = None
+):
+    encode = {"sub": username, "id": user_id}
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:

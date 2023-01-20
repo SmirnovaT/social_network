@@ -10,7 +10,6 @@ from src.shared.responses import successful_response
 
 
 class LikeRepository(BaseRepository):
-
     def get_like(self):
         return self.db.query(models.Like).all()
 

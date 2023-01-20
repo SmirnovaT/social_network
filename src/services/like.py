@@ -7,7 +7,11 @@ from src.shared.exeptions import http_like_exception, get_user_exception
 
 
 class LikeService:
-    def __init__(self, repository: LikeRepository = Depends(), user: dict = Depends(get_current_user)):
+    def __init__(
+        self,
+        repository: LikeRepository = Depends(),
+        user: dict = Depends(get_current_user),
+    ):
         self.repository = repository
         self.user = user
 
@@ -17,7 +21,7 @@ class LikeService:
 
     def create_like(self, like: Like):
         self.user_none()
-        if self.user['id'] == like.user_id:
+        if self.user["id"] == like.user_id:
             raise http_like_exception()
         return self.repository.create_like(like)
 

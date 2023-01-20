@@ -7,7 +7,11 @@ from src.shared.exeptions import get_user_exception
 
 
 class PostService:
-    def __init__(self, repository: PostRepository = Depends(), user: dict = Depends(get_current_user)):
+    def __init__(
+        self,
+        repository: PostRepository = Depends(),
+        user: dict = Depends(get_current_user),
+    ):
         self.repository = repository
         self.user = user
 

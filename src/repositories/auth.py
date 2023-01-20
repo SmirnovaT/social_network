@@ -4,7 +4,6 @@ from src.repositories.base_repository import BaseRepository
 
 
 class CreateUserRepository(BaseRepository):
-
     def creat_new_user(self, create_user):
         create_user_model = models.User()
         create_user_model.email = create_user.email
