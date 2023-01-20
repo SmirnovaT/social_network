@@ -1,20 +1,15 @@
 from fastapi import Depends, APIRouter, FastAPI
 
-from src.database import Base, engine
 from src.schemas.like import Like
 from src.services.like import LikeService
 
 app = FastAPI()
 like_router = APIRouter(
-    prefix='/api/like',
-    tags=['like'],
-    responses={404: {"description": "Not found"}}
+    prefix="/api/like", tags=["like"], responses={404: {"description": "Not found"}}
 )
 
-Base.metadata.create_all(bind=engine)
 
-
-@like_router.get('/')
+@like_router.get("/")
 async def read_all(service: LikeService = Depends(LikeService)):
     return service.get_like()
 
