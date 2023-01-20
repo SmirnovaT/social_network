@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+
 from src.controller import post, like, auth
-from database import Base, engine
+from src.database import Base, engine
 
 app = FastAPI()
 

@@ -1,8 +1,9 @@
 from fastapi import Depends
 
-from src.controller.auth import get_current_user, get_user_exception
 from src.repositories.post import PostRepository
 from src.schemas.post import Post
+from src.services.auth import get_current_user
+from src.shared.exeptions import get_user_exception
 
 
 class PostService:

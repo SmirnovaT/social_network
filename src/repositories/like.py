@@ -6,7 +6,7 @@ sys.path.append("../../code")
 from src.models.like import Like
 
 from ..repositories.base_repository import BaseRepository
-from src.responses import successful_response
+from src.shared.responses import successful_response
 
 
 class LikeRepository(BaseRepository):

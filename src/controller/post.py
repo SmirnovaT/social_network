@@ -1,8 +1,8 @@
+from fastapi import Depends, APIRouter, FastAPI
+
 from src.database import engine, Base
 from src.schemas.post import Post
 from src.services.post import PostService
-
-from fastapi import Depends, APIRouter, FastAPI
 
 app = FastAPI()
 
@@ -34,7 +34,6 @@ async def create_post(post: Post, service: PostService = Depends(PostService)):
 @post_router.put('/{post_id}')
 async def update_post(post_id: int, post: Post, service: PostService = Depends(PostService)):
     return service.update_post(post_id, post)
-
 
 
 @post_router.delete('/{post_id}')

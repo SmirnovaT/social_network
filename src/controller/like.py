@@ -1,11 +1,9 @@
-from src.database import engine, Base
-from src.schemas.like import Like
+from fastapi import Depends, APIRouter, FastAPI
 
+from src.database import Base, engine
+from src.schemas.like import Like
 from src.services.like import LikeService
 
-
-
-from fastapi import Depends, APIRouter, FastAPI
 app = FastAPI()
 like_router = APIRouter(
     prefix='/api/like',

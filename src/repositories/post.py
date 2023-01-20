@@ -1,9 +1,8 @@
 from src import models
-from src.exeptions import http_post_exception
-
-from ..repositories.base_repository import BaseRepository
-from src.responses import successful_response
 from src.schemas.post import Post
+from src.shared.exeptions import http_post_exception
+from src.shared.responses import successful_response
+from ..repositories.base_repository import BaseRepository
 
 
 class PostRepository(BaseRepository):

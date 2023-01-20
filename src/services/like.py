@@ -1,8 +1,9 @@
 from fastapi import Depends
-from src.controller.auth import get_current_user, get_user_exception
-from src.exeptions import http_like_exception
+
 from src.repositories.like import LikeRepository
 from src.schemas.like import Like
+from src.services.auth import get_current_user
+from src.shared.exeptions import http_like_exception, get_user_exception
 
 
 class LikeService:

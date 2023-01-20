@@ -1,7 +1,3 @@
-import sys
-
-sys.path.append("../../code")
-
-from ..models.like import Like
-from ..models.post import Post
-from ..models.user import User
+from src.models.like import Like
+from src.models.post import Post
+from src.models.user import User
