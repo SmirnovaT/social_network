@@ -3,13 +3,13 @@ from urllib import parse
 
 from fastapi import APIRouter
 
-unencoded_router = APIRouter(
-    prefix="/api/unencoded",
-    tags=["unencoded"],
+decode_router = APIRouter(
+    prefix="/api/decode",
+    tags=["decode"],
     responses={404: {"description": "Not found"}},
 )
 
 
-@unencoded_router.get("/")
-async def unencoded(url):
+@decode_router.get("/")
+async def decode(url):
     return urllib.parse.quote(url, safe="")
