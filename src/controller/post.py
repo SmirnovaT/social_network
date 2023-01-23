@@ -1,9 +1,7 @@
-from fastapi import Depends, APIRouter, FastAPI
+from fastapi import Depends, APIRouter
 
 from src.schemas.post import Post
 from src.services.post import PostService
-
-app = FastAPI()
 
 post_router = APIRouter(
     prefix="/api/post", tags=["post"], responses={404: {"description": "Not found"}}
